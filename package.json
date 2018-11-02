@@ -1,0 +1,36 @@
+{
+  "name": "bootcampproject2",
+  "version": "1.0.0",
+  "description": "Craigslist styled forum for making postings for selling items to users",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "seed": "node ./seeders/seed-db.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ajfleck13/flecklist.git"
+  },
+  "keywords": [
+    "bootcamp",
+    "project",
+    "craigslist",
+    "example",
+    "opensource"
+  ],
+  "author": "aj fleck",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ajfleck13/flecklist/issues"
+  },
+  "homepage": "https://github.com/ajfleck13/flecklist#readme",
+  "dependencies": {
+    "express": "^4.16.4",
+    "mysql2": "^1.6.1",
+    "sequelize": "^4.41.0"
+  },
+  "engines": {
+    "node": "10.10.0"
+  }
+}
