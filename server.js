@@ -19,7 +19,7 @@ require('./routes/html-routes.js')(app);
 
 //First link to database using sequelize and sync with it
 //Tell express app to start listening for these routes on this port
-db.sequelize.sync({force: true;}).then(function() {
+db.sequelize.sync().then(function() {
   app.listen(PORT, function() {
     console.log(`App listening on PORT ${PORT}`);
   });

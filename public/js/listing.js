@@ -88,6 +88,9 @@ const showMoreListings = function(userPosition) {
     })
 };
 
+$("#showmorebutton1").on("click", showMoreListings);
+$("#showmorebutton2").on("click", showMoreListings);
+
 moreButton.on("click", showMoreListings);
 
 const createListingCard = function(listing) {
@@ -337,6 +340,8 @@ const showMoreMapListings = function(userPosition) {
         googleMap.fitBounds(mapViewBounds);
     })
 };
+
+$("#mapShowMoreButton").on("click", showMoreMapListings);
 
 const fullMapView = function() {
     if(currentViewState == viewStates.FULLMAP)
