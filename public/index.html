@@ -3,46 +3,313 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>EmployeeFinder</title>
     
     <!-- Latest compiled and minified CSS & JS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="./css/style.css">
     <script
     src="https://code.jquery.com/jquery-3.3.1.min.js"
     integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
     crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
-    
+
     <!-- Font Awesome Glyphicons -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
-
+        
 </head>
 <body>
-    <div class="container">
-  
-      <div class="jumbotron">
-        <h1><i class="fa fa-money" aria-hidden="true"></i> Fleckslist</h1>
-        <hr>
-        <h2>Click so that we can begin posting listings!</h2>
-        <br>
-  
-        <div>
-          <a href="/listing"><button class="btn btn-lg btn-primary"><h4><span class="fa fa-list-alt"></span> Go to Survey</h4></button></a>
+    <div class="container" id="pageContainer">
+        <!-- Initial modal for selecting initial user location -->
+        <div class="appPage" id="landingPage">
+            <div class="jumbotron">
+                <h1><i class="fa fa-money" aria-hidden="true"></i> Fleckslist</h1>
+                <hr>
+                <h2>Click so that we can begin posting listings!</h2>
+                <br>
+            
+                <div class="row">
+                    <div class="col-lg-6">
+                        <button class="btn btn-lg btn-primary" id="curLocation"><h4><span class="fa fa-list-alt"></span>Use my current location</h4></button>
+                    </div>
+                    <div class="col-lg-6">
+                        <h4>Input location</h4>
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" placeholder="Address to Use" id="userGeolocation">
+                            <div class="input-group-append">
+                                <button type="button" class="btn btn-success" onclick="geolocateUser();">Search</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-  
-      <footer class="footer">
-        <div class="container">
-          <p><a href="/api/employees">API Employees List</a></p>
-        </div>
-      </footer>
 
+        <!-- Page which displays a list of all listings -->
+        <div class="appPage" id="listPage" style="display:none;">
+            <div id="allListingContainer">
+                <nav class="navbar navbar-light fixed-top" style="background-color: #e3f2fd;">
+                    <a class="navbar-brand text-primary font-weight-bold cursorlink mr-auto" id="newLocation">Change Location</a>
+                    <button type="button" class="navbar-brand btn btn-info" data-toggle="modal" data-target="#loginModal" id="modalLoginButton">Login or Signup</button>
+                    <!-- <a class="navbar-brand">Login or Signup</a> -->
+                    <ul class="navbar-nav navbar-expand" id="loggedInNavbar" style="display: none;">
+                        <li class="nav-item userlink">
+                            <a class="text-primary cursorlink font-weight-bold" data-toggle="modal" data-target="#newPostModal" id="modalLoginButton">New post</a>
+                        </li>
+                        <li class="nav-item userlink">
+                            <a class="text-primary cursorlink" id="profileButton">Profile</a>
+                        </li>
+                        <!-- <li class="nav-item userlink">
+                            <a class="text-primary cursorlink" id="myListingsButton">My Posts</a>
+                        </li> -->
+                        <li class="nav-item userlink">
+                            <a class="text-primary cursorlink" id="logoutButton">Logout</a>
+                        </li>
+                    </ul>
+                      
+                </nav>
+                          
+                <div class="searchbar">
+                    <div class="btn-group" role="group" aria-label="Basic example">
+                        <button type="button" class="btn btn-secondary">Within<span class="d-none d-lg-inline-block d-xl-none">&nbsp;(miles)</span>:  </button>
+                        <button type="button" class="btn btn-secondary timeselectors">2<span class="d-none d-xl-inline-block">&nbsp;Miles</span></button>
+                        <button type="button" class="btn btn-secondary timeselectors">5<span class="d-none d-xl-inline-block">&nbsp;Miles</span></button>
+                        <button type="button" class="btn btn-secondary timeselectors">10<span class="d-none d-xl-inline-block">&nbsp;Miles</span></button>
+                        <button type="button" class="btn btn-secondary timeselectors">20<span class="d-none d-xl-inline-block">&nbsp;Miles</span></button>
+                        <button type="button" class="btn btn-secondary timeselectors">40<span class="d-none d-xl-inline-block">&nbsp;Miles</span></button>
+                        <button type="button" class="btn btn-secondary timeselectors">60<span class="d-none d-xl-inline-block">&nbsp;Miles</span></button>
+                    </div>
+                    
+                    <div class="btn-group float-right" role="group" aria-label="Basic example">
+                        <button type="button" onclick="resetToCompact();" class="btn btn-light lightbordered" autofocus>Compact</button>
+                        <button type="button" onclick="enableExpandedMode();" class="btn btn-light lightbordered d-none d-xl-block">Expanded</button>
+                        <button type="button" onclick="fullMapView();" class="btn btn-light lightbordered">Map</button>
+                    </div>
+                    
+                    <br>
+
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="Search body or title" id="searchBar">
+                        <div class="input-group-append">
+                            <button type="button" class="btn btn-success">Search</button>
+                        </div>
+                    </div>
+                          
+                </div>     
+
+                <!-- Expanded Listing View -->
+                <div class="row" id="expandedView" style="display: none;">
+                    <div class="col-3">
+                        <ul id="allListingsList"></ul> <!-- holds list elements represeting each listing -->
+                        <div class="text-center">
+                            <button type="button" class="btn btn-success mx-auto" onclick="showMoreListings();">SHOW MORE</button>
+                        </div>
+                    </div>
+
+                    <div class="col-9">
+                        <div id="listingDisplayExpanded"></div>
+                    </div>
+                </div>
+
+                <!-- Compact Listing View -->
+                <div id="compactView">
+                    <div id="allListingCards"></div> <!-- holds cards represeting each listing -->
+                    <div class="text-center">
+                        <button type="button" class="btn btn-success mx-auto" onclick="showMoreListings();">SHOW MORE</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page which shows detailed listing information and location -->
+        <div id="listingDisplayCompact">
+            <div class="appPage" id="listingDisplay" style="display:none;">
+                <button type="button" class="btn btn-secondary" id="listBackButton">
+                    <i class="fa fa-arrow-left"></i>
+                    Back
+                </button>
+                <div class="rightcontainer">
+                    <img id="displayImage">                
+                    <div class="regularMap" id="googleMap"></div>
+                </div>
+                <h1 id="listingTitle">Title</h1>
+                <h5 id="listingAuthor">Author</h5>
+                <hr>
+                <p id="listingBody">
+                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Magni ullam tempora architecto nam, dolores molestias quo esse quisquam optio, reprehenderit nobis laboriosam sit quae perspiciatis ipsam earum porro hic delectus.
+                </p>
+            </div>
+        </div>
     </div>
 
-    <script src="./js/app.js"></script>
+    <!-- Modal for user signup or login -->
+    <div class="modal" id="newPostModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">Create New Listing</h3>
+                </div>
+                <div class="modal-body">
+                    <h5>Listing Title</h5>
+                    <input type="text" class="form-control" placeholder="Your listing" id="newListingTitle">
+                    <br>
 
+                    <h5>Description</h5>
+                    <textarea class="form-control" maxlength="2000" placeholder="Item Description" id="newListingDescription"></textarea>
+                    <br>
+        
+                    <h5>Picture</h5>
+                    <input type="text" class="form-control" placeholder="Imgur Link to Picture/Album of Object" id="newListingPicture">
+                    <br>
+
+                    <h5>Trade Location</h5>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="Choose Meetup Location" id="meetupLocation">
+                        <div class="input-group-append">
+                            <button type="button" class="btn btn-success" onclick="chooseMeetupLocation();">Find</button>
+                        </div>
+                    </div>
+                    <h5 id="chosenMeetupLocation" style="display:none;"></h5>
+
+                    <div id="newPostModalError" style="display: none;">
+                        <br>
+                        <div id="newPostModalErrorText" class="alert alert-danger text-center">Test Message</div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary float-right" onclick='submitNewListing();'>Post New Entry</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for user signup or login -->
+    <div class="modal" id="profileModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="profileUsername">Username</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="float-right">
+                        <img id="profilePicture">                
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <h3>Name</h3>
+                        </div>
+                        <div class="col-lg-9">
+                            <h3 id="profileName">Name</h3>
+                        </div>
+
+                        <div class="col-lg-3">
+                            <h3>Phone</h3>
+                        </div>
+                        <div class="col-lg-9">
+                            <h3 id="profilePhone">Phone</h3>
+                        </div>
+
+                        <div class="col-lg-3">
+                            <h3>Email</h3>
+                        </div>
+                        <div class="col-lg-9">
+                            <h3 id="profileEmail">Email</h3>
+                        </div>
+                    </div>
+        
+                    <h4>About</h4>
+                    <p id="profileAbout">About me</p>
+                    <br>
+
+                    <div id="newPostModalError" style="display: none;">
+                        <br>
+                        <div id="newPostModalErrorText" class="alert alert-danger text-center">Test Message</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for user signup or login -->
+    <div class="modal" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="Modalsubmit" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Login or Signup</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h3>Login</h3>
+                            <hr>
+                            <input type="text" class="form-control" placeholder="Username" id="loginUsername">
+                            <br>
+                            <input type="password" class="form-control" placeholder="Password" id="loginPassword">
+                            <br>
+                            <br>
+                            <br>
+                            <button type="button" class="btn btn-primary float-right" id="loginButton">Login</button>
+                        </div>
+                        <div class="col-md-6">
+                            <h3>Signup</h3>
+                            <hr>
+                            <input type="text" class="form-control" placeholder="Username" id="createUsername">
+                            <br>
+                            <input type="password" class="form-control" placeholder="Password" id="createPassword">
+                            <br>
+                            <input type="text" class="form-control" placeholder="Email" id="createEmail">
+                            <br>
+                            <button type="button" class="btn btn-primary float-right" id="createButton">Signup</button>
+                        </div>
+                    </div>
+                    <div id="loginModalError" style="display: none;">
+                        <br>
+                        <div id="loginModalErrorText" class="alert alert-danger text-center">Test Message</div>
+                    </div>
+                    <div class="modal-footer">
+                        <h5>By signing up you agree to our <span class="d-inline-block btn-link" tabindex="0" data-toggle="tooltip" title="You have no privacy">privacy policy</span></h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="mapViewButtons" style="display:none;">
+        <div class="btn-group" role="group" id="fixedrightbuttons">
+            <button type="button" onclick="resetToCompact();" class="btn btn-light lightbordered">Compact</button>
+            <button type="button" onclick="enableExpandedMode();" class="btn btn-light lightbordered d-none d-xl-block">Expanded</button>
+            <button type="button" onclick="fullMapView();" class="btn btn-light lightbordered" autofocus>Map</button>
+        </div>
+
+        <button type="button" class="btn btn-success" id="mapShowMoreButton">SHOW MORE</button>
+    </div>
+
+    <div class="modal" id="geocodeModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content bg-secondary">
+                <div class="modal-header">
+                    <h5 class="modal-title">Choose Correct Geocode Location</h5>
+                </div>
+                <div class="modal-body">
+                    <ul id="geocodeLocationsList"></ul>
+                    
+                    <div class="modal-footer">
+                        <h5>Please choose the location that best matches the one you wished to enter</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBX_xk801I4H5j3WIXmAFLQFw3mAYnplok&callback=initMap">
+    </script>
+        
+  
+    <script src="./js/listing.js"></script>
 </body>
 </html>

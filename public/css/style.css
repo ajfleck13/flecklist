@@ -1,5 +1,5 @@
 body {
-    margin: 10px;
+    padding-top: 4.5rem;
 }
 
 .listing {
@@ -44,6 +44,31 @@ body {
     height: 100%;
 }
 
+.modal-lg {
+    width: 80%;
+    height: 50%;
+}
+
+.lightbordered {
+    border: 2px grey solid;
+}
+
+.lightbordered + .lightbordered {
+    border-left: 0px;
+}
+
+.lightbordered:focus {
+    background-color: green;
+}
+
+.cursorlink {
+    cursor: pointer;
+}
+
+.userlink + .userlink {
+    margin-left: 1em;
+}
+
 #displayImage {
     width: 400px;
     height: 400px;
@@ -54,4 +79,22 @@ body {
     width: 40%;
     height: 100px;
     /* margin: 10px auto !important; */
+}
+
+#profilePicture {
+    width: 10%;
+    height: 10%;
+}
+
+#fixedrightbuttons {
+    position: fixed;
+    right: 60px;
+    top: 10px;
+}
+
+#mapShowMoreButton {
+    position: fixed;
+    left: 50%;
+    transform: translate(-50%, 0);
+    top: 10px;
 }
